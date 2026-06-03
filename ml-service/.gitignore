@@ -1,0 +1,12 @@
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.env
+.cache/
+models/
+uploads/
+tmp/
