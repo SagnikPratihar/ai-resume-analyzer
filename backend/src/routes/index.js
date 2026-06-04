@@ -1,14 +1,17 @@
-import { Router } from 'express'
+import { Router } from "express";
+import authRoutes from "./auth.routes.js";
 
-const router = Router()
+const router = Router();
 
-router.get('/health', (req, res) => {
+router.get("/health", (req, res) => {
   res.json({
     success: true,
-    message: 'AI Resume Analyzer API is running',
+    message: "AI Resume Analyzer API is running",
     environment: process.env.NODE_ENV,
     timestamp: new Date().toISOString(),
-  })
-})
+  });
+});
 
-export default router
+router.use("/auth", authRoutes);
+
+export default router;
