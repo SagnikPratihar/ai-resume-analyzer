@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config.settings import get_settings
-from app.routers import health, parser
+from app.routers import health, parser, ats
 from app.utils.logger import logger
 
 settings = get_settings()
@@ -34,6 +34,7 @@ app.add_middleware(
 
 app.include_router(health.router, prefix="/api", tags=["Health"])
 app.include_router(parser.router,  prefix="/api", tags=["Parser"])
+app.include_router(ats.router, prefix="/api", tags=["ATS"])
 
 
 @app.get("/")
