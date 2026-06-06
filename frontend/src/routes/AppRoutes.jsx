@@ -4,10 +4,10 @@ import HomePage from "../pages/HomePage.jsx";
 import LoginPage from "../pages/LoginPage.jsx";
 import RegisterPage from "../pages/RegisterPage.jsx";
 import DashboardPage from "../pages/DashboardPage.jsx";
+import AnalysisPage from "../pages/AnalysisPage.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -15,7 +15,6 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
@@ -29,7 +28,6 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-
       <Route
         path="/login"
         element={
@@ -52,6 +50,15 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/analysis/:id"
+        element={
+          <ProtectedRoute>
+            <AnalysisPage />
           </ProtectedRoute>
         }
       />

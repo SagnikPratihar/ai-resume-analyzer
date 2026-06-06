@@ -6,6 +6,7 @@ import ResumeUpload from "../components/resume/ResumeUpload.jsx";
 import ATSScoreCard from "../components/resume/ATSScoreCard.jsx";
 import Button from "../components/ui/Button.jsx";
 import Alert from "../components/ui/Alert.jsx";
+import { Link } from "react-router-dom";
 
 const DashboardPage = () => {
   const { user, logout } = useAuth();
@@ -37,7 +38,7 @@ const DashboardPage = () => {
       }
     }, 3000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [resumes]);
 
   const loadData = async () => {
@@ -231,6 +232,13 @@ const DashboardPage = () => {
                               View Score
                             </Button>
                           )}
+                        </div>
+                        <div className="flex gap-2 mt-3">
+                          <Link to={`/analysis/${resume.id}`}>
+                            <Button className="text-sm py-1.5">
+                              Open Analysis
+                            </Button>
+                          </Link>
                           <Button
                             variant="danger"
                             onClick={() => handleDelete(resume.id)}

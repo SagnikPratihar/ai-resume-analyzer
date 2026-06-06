@@ -60,6 +60,25 @@ const AnalysisModel = {
     );
   },
 
+  async updateMatchScores(id, matchData) {
+    await query(
+      `UPDATE analyses SET
+        job_description_id = ?,
+        match_percentage   = ?,
+        matched_skills     = ?,
+        missing_skills     = ?,
+        status             = 'completed'
+       WHERE id = ?`,
+      [
+        matchData.jdId,
+        matchData.match_percentage,
+        JSON.stringify(matchData.matched_skills),
+        JSON.stringify(matchData.missing_skills),
+        id,
+      ],
+    );
+  },
+
   async updateStatus(id, status) {
     await query("UPDATE analyses SET status = ? WHERE id = ?", [status, id]);
   },
