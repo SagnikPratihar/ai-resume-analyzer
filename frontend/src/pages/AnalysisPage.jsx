@@ -5,8 +5,19 @@ import analysisService from "../services/analysis.service.js";
 import ATSScoreCard from "../components/resume/ATSScoreCard.jsx";
 import JDMatchForm from "../components/resume/JDMatchForm.jsx";
 import MatchScoreCard from "../components/resume/MatchScoreCard.jsx";
+import AIFeedback from "../components/ai/AIFeedback.jsx";
+import BulletEnhancer from "../components/ai/BulletEnhancer.jsx";
+import InterviewQuestions from "../components/ai/InterviewQuestions.jsx";
 import Button from "../components/ui/Button.jsx";
 import useAuth from "../hooks/useAuth.js";
+
+const TABS = [
+  { key: "ats", label: "📊 ATS Score" },
+  { key: "match", label: "🔍 JD Matching" },
+  { key: "feedback", label: "🤖 AI Feedback" },
+  { key: "bullets", label: "✨ Bullet Enhancer" },
+  { key: "interview", label: "🎯 Interview Prep" },
+];
 
 const AnalysisPage = () => {
   const { id } = useParams();
@@ -26,7 +37,7 @@ const AnalysisPage = () => {
     try {
       const { data } = await resumeService.getById(id);
       setResume(data.resume);
-    } catch (err) {
+    } catch {
       setError("Failed to load resume");
     }
   };
@@ -95,58 +106,56 @@ const AnalysisPage = () => {
 
         {/* Error */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+          <div
+            className="mb-4 p-3 bg-red-50 border border-red-200
+                          rounded-lg text-red-700 text-sm"
+          >
             {error}
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-gray-200">
-          {[
-            { key: "ats", label: "📊 ATS Score" },
-            { key: "match", label: "🔍 JD Matching" },
-          ].map((tab) => (
+        <div className="flex gap-1 mb-6 border-b border-gray-200 overflow-x-auto">
+          {TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === tab.key
-                  ? "border-primary-600 text-primary-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
+              className={`px-4 py-2 text-sm font-medium border-b-2 whitespace-nowrap
+                         transition-colors ${
+                           activeTab === tab.key
+                             ? "border-primary-600 text-primary-600"
+                             : "border-transparent text-gray-500 hover:text-gray-700"
+                         }`}
             >
               {tab.label}
             </button>
           ))}
         </div>
 
-        {/* ATS Tab */}
+        {/* ── ATS Score Tab ── */}
         {activeTab === "ats" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <div className="card mb-4">
-                <h3 className="font-semibold text-gray-900 mb-2">
-                  ATS Score Analysis
-                </h3>
-                <p className="text-sm text-gray-500 mb-4">
-                  Check how well your resume performs against ATS systems
+            <div className="card">
+              <h3 className="font-semibold text-gray-900 mb-2">
+                ATS Score Analysis
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Check how well your resume performs against ATS systems
+              </p>
+              <Button
+                onClick={handleATSAnalyze}
+                loading={analyzing}
+                disabled={!resume.is_parsed}
+                className="w-full"
+              >
+                {atsAnalysis ? "Re-analyze ATS Score" : "Analyze ATS Score"}
+              </Button>
+              {!resume.is_parsed && (
+                <p className="text-xs text-yellow-600 mt-2 text-center">
+                  ⏳ Waiting for resume to finish parsing...
                 </p>
-                <Button
-                  onClick={handleATSAnalyze}
-                  loading={analyzing}
-                  disabled={!resume.is_parsed}
-                  className="w-full"
-                >
-                  {atsAnalysis ? "Re-analyze ATS Score" : "Analyze ATS Score"}
-                </Button>
-                {!resume.is_parsed && (
-                  <p className="text-xs text-yellow-600 mt-2 text-center">
-                    ⏳ Waiting for resume to finish parsing...
-                  </p>
-                )}
-              </div>
+              )}
             </div>
-
             <div>
               {atsAnalysis ? (
                 <ATSScoreCard analysis={atsAnalysis} />
@@ -162,7 +171,7 @@ const AnalysisPage = () => {
           </div>
         )}
 
-        {/* JD Match Tab */}
+        {/* ── JD Match Tab ── */}
         {activeTab === "match" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <JDMatchForm
@@ -181,6 +190,15 @@ const AnalysisPage = () => {
             )}
           </div>
         )}
+
+        {/* ── AI Feedback Tab ── */}
+        {activeTab === "feedback" && <AIFeedback resume={resume} />}
+
+        {/* ── Bullet Enhancer Tab ── */}
+        {activeTab === "bullets" && <BulletEnhancer />}
+
+        {/* ── Interview Prep Tab ── */}
+        {activeTab === "interview" && <InterviewQuestions resume={resume} />}
       </main>
     </div>
   );
