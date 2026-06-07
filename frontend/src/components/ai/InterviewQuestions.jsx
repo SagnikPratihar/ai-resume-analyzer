@@ -69,7 +69,7 @@ const InterviewQuestions = ({ resume }) => {
           🎯 Interview Question Generator
         </h3>
         <p className="text-sm text-gray-500 mb-4">
-          Claude analyzes your resume and predicts likely interview questions
+          Gemini analyzes your resume and predicts likely interview questions
         </p>
         <div className="flex gap-3">
           <input

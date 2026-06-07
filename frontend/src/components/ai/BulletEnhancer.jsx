@@ -53,7 +53,7 @@ const BulletEnhancer = () => {
           ✨ Bullet Point Enhancer
         </h3>
         <p className="text-sm text-gray-500 mb-4">
-          Paste your weak bullet points and Claude will rewrite them
+          Paste your weak bullet points and Gemini will rewrite them
         </p>
 
         <input
